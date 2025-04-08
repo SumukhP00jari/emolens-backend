@@ -17,3 +17,12 @@ class NeurodivergentStatsAPIView(APIView):
         serializer = NeurodivergentSerializer(data, many=True)
         return Response(serializer.data)
 
+class DBConnectionCheck(APIView):
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'")
+                tables = cursor.fetchall()
+            return Response({"status": "connected", "tables": tables})
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=500)
