@@ -16,8 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.urls import path
+from stats_api.views import ADHDStatsAPIView, NeurodivergentStatsAPIView
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/', include('emolens_api.urls')),
+    path('api/adhd/', ADHDStatsAPIView.as_view(), name='adhd-stats'),
+    path('api/neurodivergent/', NeurodivergentStatsAPIView.as_view(), name='neurodivergent-stats'),
 ]

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'emolens_api',
     "corsheaders",
+    'stats_api',
 ]
 
 MIDDLEWARE = [
@@ -82,13 +83,17 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "db_kindlepeers",
+        "USER": "admin",
+        "PASSWORD": "kindlepeers123",
+        "HOST": "rds-kindlepeers.cdmcsi4iwcsz.ap-southeast-2.rds.amazonaws.com",
+        "PORT": "5432",
     }
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://www.kindlepeers.me/",  
+    "https://www.kindlepeers.me",  
 ]
 
 # Password validation

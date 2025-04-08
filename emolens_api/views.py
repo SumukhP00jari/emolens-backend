@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 from openai import OpenAI
+import re
 
 # Connect to OpenRouter using OpenAI SDK
 client = OpenAI(
@@ -12,27 +13,46 @@ client = OpenAI(
     api_key=settings.OPENAI_API_KEY
 )
 
+def is_nonsense(text):
+    if len(text.strip()) < 4:
+        return True
+    if re.fullmatch(r'[a-zA-Z]{4,}', text):  # a valid single word like "Hello"
+        return False
+    if re.fullmatch(r'[^a-zA-Z0-9 ]+', text):  # only symbols
+        return True
+    if not re.search(r'[aeiouAEIOU]', text):  # no vowels
+        return True
+    if len(re.findall(r'[a-zA-Z]', text)) / max(1, len(text)) < 0.5:  # mostly non-letters
+        return True
+    return False
+
 class RephraseTextAPIView(APIView):
     def post(self, request):
         input_text = request.data.get("input_text")
-        if not input_text:
-            return Response({"error": "Input text is required."}, status=400)
+
+        # Input validation
+        if not input_text or is_nonsense(input_text):
+            return Response({
+                "error": "The text seems nonsensical. Please enter a meaningful sentence."
+            }, status=400)
+
+        # Updated empathetic rephrasing prompt
+        prompt = f"""
+        You are a kind and supportive parenting assistant.
+
+        Please rephrase the following sentence in a way that a 6–8-year-old child can say it to a classmate who may be struggling with emotional regulation or has ADHD.
+
+        Make sure the tone is gentle, inclusive, and encourages empathy and friendship.
+
+        Avoid sarcasm, judgment, or urgency.
+
+        Original: "{input_text}"
+        Rephrased:
+        """
 
         try:
-            # Chat-style prompt for better context understanding
-            prompt = f"""
-You are a kind and supportive parenting assistant.
-Rephrase the following sentence to sound gentle, emotionally safe, and suitable for a 6–8-year-old child.
-
-Avoid judgment, sarcasm, or urgency.
-
-Original: "{input_text}"
-Rephrased:
-"""
-
-            # Use a model that works well with messages (ChatML)
             completion = client.chat.completions.create(
-                model="mistralai/mistral-7b-instruct",  # Updated model name
+                model="mistralai/mistral-7b-instruct",
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
