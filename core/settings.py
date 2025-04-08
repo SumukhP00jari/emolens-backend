@@ -83,12 +83,12 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kindlepeers_db',
         'USER': 'admin',
         'PASSWORD': 'kindlepeers123',
         'HOST': 'rds-kindlepeers.cdmcsi4iwcsz.ap-southeast-2.rds.amazonaws.com',
-        'PORT': '5432',
+        'PORT': '3306',
     }
 }
 
