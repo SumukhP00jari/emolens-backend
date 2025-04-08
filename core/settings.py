@@ -82,13 +82,13 @@ WSGI_APPLICATION = "core.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "db_kindlepeers",
-        "USER": "admin",
-        "PASSWORD": "kindlepeers123",
-        "HOST": "rds-kindlepeers.cdmcsi4iwcsz.ap-southeast-2.rds.amazonaws.com",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'kindlepeers_db',
+        'USER': 'admin',
+        'PASSWORD': 'kindlepeers123',
+        'HOST': 'rds-kindlepeers.cdmcsi4iwcsz.ap-southeast-2.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
