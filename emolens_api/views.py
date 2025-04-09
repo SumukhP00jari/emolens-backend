@@ -13,18 +13,39 @@ client = OpenAI(
     api_key=settings.OPENAI_API_KEY
 )
 
+def is_nonsense(text):
+    if len(text) < 4:
+        return True
+    if re.fullmatch(r'[a-zA-Z]{4,}', text):  # single clean word is okay
+        return False
+    if re.fullmatch(r'[^a-zA-Z0-9 ]+', text):  # just symbols
+        return True
+    if not re.search(r'[aeiouAEIOU]', text):  # no vowels = gibberish
+        return True
+    if len(re.findall(r'[a-zA-Z]', text)) / len(text) < 0.5:
+        return True
+    return False
+
+
 class RephraseTextAPIView(APIView):
     def post(self, request):
         input_text = request.data.get("input_text", "").strip()
 
-        if not input_text or len(input_text) < 4:
+        # Quick check: empty or obviously nonsensical
+        if not input_text:
             return Response({
-                "error_type": "empty_or_short",
-                "message": "Please enter a longer, more meaningful sentence."
+                "error_type": "empty_input",
+                "message": "Please enter a sentence to rephrase."
+            }, status=400)
+
+        if is_nonsense(input_text):
+            return Response({
+                "error_type": "nonsense_check",
+                "message": "The text seems nonsensical. Please enter a meaningful sentence."
             }, status=400)
 
         try:
-            # Step 1: Ask AI if the sentence is meaningful
+            # Step 1: Validate with AI — is it a meaningful and age-appropriate sentence?
             validation_prompt = f"""
 Is the following sentence meaningful and appropriate to be spoken by a child aged 6 to 8 to a classmate?
 
@@ -32,6 +53,7 @@ Reply only with "Yes" or "No".
 
 Sentence: "{input_text}"
 """
+
             validation_response = client.chat.completions.create(
                 model="mistralai/mistral-7b-instruct",
                 messages=[{"role": "user", "content": validation_prompt}],
@@ -43,11 +65,11 @@ Sentence: "{input_text}"
 
             if "no" in ai_validation:
                 return Response({
-                    "error_type": "nonsensical_input",
-                    "message": "The sentence does not seem meaningful or appropriate."
+                    "error_type": "not_meaningful",
+                    "message": "The sentence does not seem meaningful or appropriate for a child to say."
                 }, status=400)
 
-            # Step 2: If valid, rephrase it nicely
+            # Step 2: Generate rephrased child-friendly sentence
             rephrase_prompt = f"""
 You are a kind and supportive parenting assistant.
 
@@ -60,14 +82,15 @@ Avoid sarcasm, judgment, or urgency.
 Original: "{input_text}"
 Rephrased:
 """
-            completion = client.chat.completions.create(
+
+            rephrase_response = client.chat.completions.create(
                 model="mistralai/mistral-7b-instruct",
                 messages=[{"role": "user", "content": rephrase_prompt}],
                 temperature=0.7,
                 max_tokens=150
             )
 
-            output = completion.choices[0].message.content.strip()
+            output = rephrase_response.choices[0].message.content.strip()
 
             return Response({
                 "original": input_text,
