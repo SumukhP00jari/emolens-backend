@@ -29,6 +29,15 @@ def is_nonsense(text):
 
 class RephraseTextAPIView(APIView):
     def post(self, request):
+        try:
+            data = request.data
+            if not isinstance(data, dict):
+                data = json.loads(request.body.decode('utf-8'))
+        except Exception as e:
+            return Response({
+                "error_type": "json_parse_error",
+                "message": "Invalid JSON format received from frontend."
+            }, status=400)
         input_text = request.data.get("input_text", "").strip()
 
         # Quick check: empty or obviously nonsensical
