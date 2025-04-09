@@ -14,10 +14,22 @@ client = OpenAI(
     api_key=settings.OPENAI_API_KEY
 )
 
+def is_nonsense(text):
+    if len(text) < 4:
+        return True
+    if re.fullmatch(r'[a-zA-Z]{4,}', text):  # single clean word is okay
+        return False
+    if re.fullmatch(r'[^a-zA-Z0-9 ]+', text):  # just symbols
+        return True
+    if not re.search(r'[aeiouAEIOU]', text):  # no vowels = gibberish
+        return True
+    if len(re.findall(r'[a-zA-Z]', text)) / len(text) < 0.5:
+        return True
+    return False
+
 class RephraseTextAPIView(APIView):
     def post(self, request):
         try:
-            # Handle malformed JSON edge cases
             data = request.data
             if not isinstance(data, dict):
                 data = json.loads(request.body.decode("utf-8"))
@@ -29,41 +41,20 @@ class RephraseTextAPIView(APIView):
 
         input_text = data.get("input_text", "").strip()
 
-        if not input_text or len(input_text) < 4:
+        if not input_text:
             return Response({
                 "error_type": "empty_input",
-                "message": "Please enter a longer, more meaningful sentence."
+                "message": "Please enter a sentence to rephrase."
+            }, status=400)
+
+        if is_nonsense(input_text):
+            return Response({
+                "error_type": "invalid_input",
+                "message": "This sentence doesn’t seem meaningful. Please try rephrasing it."
             }, status=400)
 
         try:
-            # ✅ STEP 1: Validate using AI
-            validation_prompt = f"""
-You're a friendly parenting assistant.
-
-Check if the following sentence is understandable and simple enough for a 6–8-year-old child to say to a classmate.
-
-Be forgiving. If it's a basic sentence with some meaning, say "Yes".
-
-Reply only with "Yes" or "No".
-
-Sentence: "{input_text}"
-"""
-            validation_response = client.chat.completions.create(
-                model="mistralai/mistral-7b-instruct",
-                messages=[{"role": "user", "content": validation_prompt}],
-                temperature=0,
-                max_tokens=5
-            )
-
-            ai_validation = validation_response.choices[0].message.content.strip().lower()
-
-            if "no" in ai_validation:
-                return Response({
-                    "error_type": "invalid_input",
-                    "message": "This sentence doesn’t seem meaningful enough. Please try rephrasing it."
-                }, status=400)
-
-            # ✅ STEP 2: Rephrase if valid
+            # ✅ Just rephrase it without AI validation
             rephrase_prompt = f"""
 You are a kind and supportive parenting assistant.
 
