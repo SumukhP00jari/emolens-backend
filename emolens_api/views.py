@@ -17,7 +17,7 @@ client = OpenAI(
 def is_nonsense(text):
     if len(text) < 4:
         return True
-    if re.fullmatch(r'[a-zA-Z]{4,}', text):  # single clean word is okay
+    if re.fullmatch(r'[a-zA-Z]{4,}', text):  
         return False
     if re.fullmatch(r'[^a-zA-Z0-9 ]+', text):  # just symbols
         return True
@@ -47,14 +47,42 @@ class RephraseTextAPIView(APIView):
                 "message": "Please enter a sentence to rephrase."
             }, status=400)
 
+        # First filter: classic gibberish detector
         if is_nonsense(input_text):
             return Response({
                 "error_type": "invalid_input",
                 "message": "This sentence doesn’t seem meaningful. Please try rephrasing it."
             }, status=400)
 
+        # Second filter: AI checks if it's meaningful
         try:
-            # ✅ Just rephrase it without AI validation
+            check_prompt = f"""
+Is the following sentence understandable and not gibberish?
+
+Reply with only "True" or "False".
+
+Sentence: "{input_text}"
+"""
+            validation_response = client.chat.completions.create(
+                model="mistralai/mistral-7b-instruct",
+                messages=[{"role": "user", "content": check_prompt}],
+                temperature=0,
+                max_tokens=5
+            )
+            ai_check = validation_response.choices[0].message.content.strip().lower()
+            if "false" in ai_check:
+                return Response({
+                    "error_type": "invalid_input",
+                    "message": "This sentence doesn’t seem meaningful enough. Please try rephrasing it."
+                }, status=400)
+        except Exception as e:
+            return Response({
+                "error_type": "ai_validation_error",
+                "message": f"AI validation failed: {str(e)}"
+            }, status=500)
+
+        # ✅ Now rephrase the input
+        try:
             rephrase_prompt = f"""
 You are a kind and supportive parenting assistant.
 
@@ -73,7 +101,6 @@ Rephrased:
                 temperature=0.7,
                 max_tokens=150
             )
-
             output = rephrase_response.choices[0].message.content.strip()
 
             return Response({
