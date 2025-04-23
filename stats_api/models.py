@@ -16,7 +16,7 @@ class Neurodivergent(models.Model):
     class Meta:
         db_table = 'neurodivergent'
         managed = False
-
+        
 class LearningHub(models.Model):
     question = models.TextField()
     content = models.TextField()
@@ -25,7 +25,6 @@ class LearningHub(models.Model):
     class Meta:
         db_table = 'learning_hub'
         managed = False
-
 
 class ADHDTreatment(models.Model):
     treatment_type = models.CharField(max_length=50)
@@ -36,7 +35,6 @@ class ADHDTreatment(models.Model):
         db_table = 'adhd_treatment'
         managed = False
 
-
 class ADHDPrevalenceYear(models.Model):
     year = models.IntegerField()
     sex = models.CharField(max_length=10)
@@ -45,7 +43,6 @@ class ADHDPrevalenceYear(models.Model):
     class Meta:
         db_table = 'adhd_prevalence_year'
         managed = False
-
 
 class ADHDPrevalenceAge(models.Model):
     sex = models.CharField(max_length=10)
@@ -56,7 +53,6 @@ class ADHDPrevalenceAge(models.Model):
         db_table = 'adhd_prevalence_age'
         managed = False
 
-
 class ADHDPrescription(models.Model):
     age_group = models.CharField(max_length=50)
     year = models.CharField(max_length=20)
@@ -65,7 +61,6 @@ class ADHDPrescription(models.Model):
     class Meta:
         db_table = 'adhd_prescription'
         managed = False
-
 
 class ADHDDisorder(models.Model):
     mental_disorder = models.CharField(max_length=50)
@@ -76,7 +71,6 @@ class ADHDDisorder(models.Model):
         db_table = 'adhd_disorder'
         managed = False
 
-
 class ADHDCondition(models.Model):
     age_group = models.CharField(max_length=20)
     conditions = models.CharField(max_length=100)
@@ -86,9 +80,8 @@ class ADHDCondition(models.Model):
         db_table = 'adhd_condition'
         managed = False
 
-
-class ADHDDayoff(models.Model):
-    disorder = models.CharField(max_length=100)
+class ADHDDayOff(models.Model):
+    disorder = models.CharField(max_length=100, primary_key=True)
     average_days_absent = models.IntegerField()
 
     class Meta:
