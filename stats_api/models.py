@@ -16,15 +16,16 @@ class Neurodivergent(models.Model):
     class Meta:
         db_table = 'neurodivergent'
         managed = False
-        
+
 class LearningHub(models.Model):
-    question = models.TextField()
+    question = models.TextField(primary_key=True)
     content = models.TextField()
     data_insight = models.TextField(null=True, blank=True)
 
     class Meta:
         db_table = 'learning_hub'
         managed = False
+
 
 class ADHDTreatment(models.Model):
     treatment_type = models.CharField(max_length=50)
@@ -34,6 +35,9 @@ class ADHDTreatment(models.Model):
     class Meta:
         db_table = 'adhd_treatment'
         managed = False
+        unique_together = (('treatment_type', 'age_group'),)
+        
+
 
 class ADHDPrevalenceYear(models.Model):
     year = models.IntegerField()
@@ -43,6 +47,9 @@ class ADHDPrevalenceYear(models.Model):
     class Meta:
         db_table = 'adhd_prevalence_year'
         managed = False
+        unique_together = (('year', 'sex'),)
+        
+
 
 class ADHDPrevalenceAge(models.Model):
     sex = models.CharField(max_length=10)
@@ -52,6 +59,8 @@ class ADHDPrevalenceAge(models.Model):
     class Meta:
         db_table = 'adhd_prevalence_age'
         managed = False
+        unique_together = (('sex', 'age_group'),)
+
 
 class ADHDPrescription(models.Model):
     age_group = models.CharField(max_length=50)
@@ -61,6 +70,8 @@ class ADHDPrescription(models.Model):
     class Meta:
         db_table = 'adhd_prescription'
         managed = False
+        unique_together = (('age_group', 'year'),)
+
 
 class ADHDDisorder(models.Model):
     mental_disorder = models.CharField(max_length=50)
@@ -70,6 +81,8 @@ class ADHDDisorder(models.Model):
     class Meta:
         db_table = 'adhd_disorder'
         managed = False
+        unique_together = (('mental_disorder', 'sex'),)
+
 
 class ADHDCondition(models.Model):
     age_group = models.CharField(max_length=20)
@@ -79,6 +92,8 @@ class ADHDCondition(models.Model):
     class Meta:
         db_table = 'adhd_condition'
         managed = False
+        unique_together = (('age_group', 'conditions'),)
+
 
 class ADHDDayOff(models.Model):
     disorder = models.CharField(max_length=100, primary_key=True)
