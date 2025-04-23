@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.urls import path
-from stats_api.views import ADHDStatsAPIView, NeurodivergentStatsAPIView
+from stats_api.views import (ADHDStatsAPIView, NeurodivergentStatsAPIView, LearningHubAPIView, ADHDTreatmentAPIView, ADHDDisorderAPIView,
+    ADHDPrevalenceYearAPIView, ADHDPrevalenceAgeAPIView,
+    ADHDPrescriptionAPIView, ADHDConditionAPIView, ADHDDayOffAPIView)
 from stats_api.views import DBConnectionCheck
 
 
@@ -27,4 +29,12 @@ urlpatterns = [
     path('api/adhd/', ADHDStatsAPIView.as_view(), name='adhd-stats'),
     path('api/neurodivergent/', NeurodivergentStatsAPIView.as_view(), name='neurodivergent-stats'),
     path("api/check-db/", DBConnectionCheck.as_view(), name="check-db"),
+    path("learning-hub/", LearningHubAPIView.as_view(), name="learning-hub"),
+    path("adhd-treatment/", ADHDTreatmentAPIView.as_view(), name="adhd-treatment"),
+    path("adhd-disorder/", ADHDDisorderAPIView.as_view(), name="adhd-disorder"),
+    path("adhd-prevalence-year/", ADHDPrevalenceYearAPIView.as_view(), name="adhd-prevalence-year"),
+    path("adhd-prevalence-age/", ADHDPrevalenceAgeAPIView.as_view(), name="adhd-prevalence-age"),
+    path("adhd-prescription/", ADHDPrescriptionAPIView.as_view(), name="adhd-prescription"),
+    path("adhd-condition/", ADHDConditionAPIView.as_view(), name="adhd-condition"),
+    path("adhd-dayoff/", ADHDDayOffAPIView.as_view(), name="adhd-dayoff"),
 ]
