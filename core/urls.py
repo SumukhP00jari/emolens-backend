@@ -17,24 +17,25 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.urls import path
-from stats_api.views import (ADHDStatsAPIView, NeurodivergentStatsAPIView, LearningHubAPIView, ADHDTreatmentAPIView, ADHDDisorderAPIView,
-    ADHDPrevalenceYearAPIView, ADHDPrevalenceAgeAPIView,
-    ADHDPrescriptionAPIView, ADHDConditionAPIView, ADHDDayOffAPIView)
-from stats_api.views import DBConnectionCheck
-
+from stats_api.views import (
+    ADHDStatsAPIView, NeurodivergentStatsAPIView, LearningHubAPIView,
+    ADHDTreatmentAPIView, ADHDDisorderAPIView, ADHDPrevalenceYearAPIView,
+    ADHDPrevalenceAgeAPIView, ADHDPrescriptionAPIView, ADHDConditionAPIView,
+    ADHDDayOffAPIView, DBConnectionCheck
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/', include('emolens_api.urls')),
-    path('api/adhd/', ADHDStatsAPIView.as_view(), name='adhd-stats'),
-    path('api/neurodivergent/', NeurodivergentStatsAPIView.as_view(), name='neurodivergent-stats'),
+    path("api/adhd/", ADHDStatsAPIView.as_view(), name="adhd-stats"),
+    path("api/neurodivergent/", NeurodivergentStatsAPIView.as_view(), name="neurodivergent-stats"),
+    path("api/learning-hub/", LearningHubAPIView.as_view(), name="learning-hub"),
+    path("api/adhd-treatment/", ADHDTreatmentAPIView.as_view(), name="adhd-treatment"),
+    path("api/adhd-disorder/", ADHDDisorderAPIView.as_view(), name="adhd-disorder"),
+    path("api/adhd-prevalence-year/", ADHDPrevalenceYearAPIView.as_view(), name="adhd-prevalence-year"),
+    path("api/adhd-prevalence-age/", ADHDPrevalenceAgeAPIView.as_view(), name="adhd-prevalence-age"),
+    path("api/adhd-prescription/", ADHDPrescriptionAPIView.as_view(), name="adhd-prescription"),
+    path("api/adhd-condition/", ADHDConditionAPIView.as_view(), name="adhd-condition"),
+    path("api/adhd-dayoff/", ADHDDayOffAPIView.as_view(), name="adhd-dayoff"),
     path("api/check-db/", DBConnectionCheck.as_view(), name="check-db"),
-    path("learning-hub/", LearningHubAPIView.as_view(), name="learning-hub"),
-    path("adhd-treatment/", ADHDTreatmentAPIView.as_view(), name="adhd-treatment"),
-    path("adhd-disorder/", ADHDDisorderAPIView.as_view(), name="adhd-disorder"),
-    path("adhd-prevalence-year/", ADHDPrevalenceYearAPIView.as_view(), name="adhd-prevalence-year"),
-    path("adhd-prevalence-age/", ADHDPrevalenceAgeAPIView.as_view(), name="adhd-prevalence-age"),
-    path("adhd-prescription/", ADHDPrescriptionAPIView.as_view(), name="adhd-prescription"),
-    path("adhd-condition/", ADHDConditionAPIView.as_view(), name="adhd-condition"),
-    path("adhd-dayoff/", ADHDDayOffAPIView.as_view(), name="adhd-dayoff"),
 ]
