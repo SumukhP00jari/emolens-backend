@@ -37,12 +37,6 @@ class ADHDTreatmentAPIView(APIView):
         serializer = ADHDTreatmentSerializer(data, many=True)
         return Response(serializer.data)
 
-class ADHDDisorderAPIView(APIView):
-    def get(self, request):
-        data = ADHDDisorder.objects.all()
-        serializer = ADHDDisorderSerializer(data, many=True)
-        return Response(serializer.data)
-
 class ADHDPrevalenceYearAPIView(APIView):
     def get(self, request):
         data = ADHDPrevalenceYear.objects.all()
@@ -55,10 +49,10 @@ class ADHDPrevalenceAgeAPIView(APIView):
         serializer = ADHDPrevalenceAgeSerializer(data, many=True)
         return Response(serializer.data)
 
-class ADHDPrescriptionAPIView(APIView):
+class ADHDDisorderAPIView(APIView):
     def get(self, request):
-        data = ADHDPrescription.objects.all()
-        serializer = ADHDPrescriptionSerializer(data, many=True)
+        data = ADHDDisorder.objects.all()
+        serializer = ADHDDisorderSerializer(data, many=True)
         return Response(serializer.data)
 
 class ADHDConditionAPIView(APIView):
@@ -73,6 +67,11 @@ class ADHDDayOffAPIView(APIView):
         serializer = ADHDDayOffSerializer(data, many=True)
         return Response(serializer.data)
 
+class ADHDPrescriptionAPIView(APIView):
+    def get(self, request):
+        data = ADHDPrescription.objects.all()
+        serializer = ADHDPrescriptionSerializer(data, many=True)
+        return Response(serializer.data)
 
 class DBConnectionCheck(APIView):
     def get(self, request):

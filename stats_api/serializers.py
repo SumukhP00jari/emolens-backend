@@ -34,11 +34,6 @@ class ADHDPrevalenceAgeSerializer(serializers.ModelSerializer):
         model = ADHDPrevalenceAge
         fields = '__all__'
 
-class ADHDPrescriptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ADHDPrescription
-        fields = '__all__'
-
 class ADHDDisorderSerializer(serializers.ModelSerializer):
     class Meta:
         model = ADHDDisorder
@@ -49,7 +44,12 @@ class ADHDConditionSerializer(serializers.ModelSerializer):
         model = ADHDCondition
         fields = '__all__'
 
-class ADHDDayoffSerializer(serializers.ModelSerializer):
+class ADHDDayOffSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDDayoff
+        model = ADHDDayOff
+        fields = '__all__'
+
+class ADHDPrescriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ADHDPrescription
         fields = '__all__'
