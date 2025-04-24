@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-!&x4c%%qx3-*o3zso6==c26*wdi0k_uf-7#__4(c9w2un)&iak"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['api.kindlepeers.me', 'localhost', '127.0.0.1']
 
