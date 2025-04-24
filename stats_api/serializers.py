@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import (
     ADHD, Neurodivergent, LearningHub, ADHDTreatment,
     ADHDPrevalenceYear, ADHDPrevalenceAge,
-    ADHDPrescription, ADHDDisorder, ADHDCondition, ADHDDayoff
+    ADHDPrescription, ADHDDisorder, ADHDCondition, ADHDDayOff
 )
 class ADHDSerializer(serializers.ModelSerializer):
     class Meta:
