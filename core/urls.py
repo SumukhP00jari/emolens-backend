@@ -21,7 +21,7 @@ from stats_api.views import (
     ADHDPrevalenceAgeAPIView, ADHDPrevalenceYearAPIView,
     ADHDTreatmentAPIView, ADHDDisorderAPIView,
     ADHDConditionAPIView, ADHDDayOffAPIView,
-    ADHDPrescriptionAPIView
+    ADHDPrescriptionAPIView,LearningHubAPIView
 )
 
 urlpatterns = [
@@ -40,4 +40,5 @@ urlpatterns = [
     path("api/adhd-condition/", ADHDConditionAPIView.as_view(), name="adhd-condition"),
     path("api/adhd-dayoff/", ADHDDayOffAPIView.as_view(), name="adhd-dayoff"),
     path("api/adhd-prescription/", ADHDPrescriptionAPIView.as_view(), name="adhd-prescription"),
+    path("api/learning-hub/", LearningHubAPIView.as_view(), name="learning-hub"),
 ]
