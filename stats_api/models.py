@@ -46,17 +46,15 @@ class ADHDPrevalenceYear(models.Model):
         managed = False
 
 class ADHDPrevalenceAge(models.Model):
-    age_group = models.CharField(max_length=20)
-    sex = models.CharField(max_length=10)
-    rate_per_1000 = models.FloatField()
+    dummy_id = models.AutoField(primary_key=True)
+
+    sex = models.CharField(max_length=20)
+    age_group = models.CharField(max_length=10)
+    adhd_estimate = models.IntegerField()
 
     class Meta:
         db_table = 'adhd_prevalence_age'
         managed = False
-        unique_together = ('age_group', 'sex')  # This mimics a composite key
-
-    def __str__(self):
-        return f"{self.age_group} - {self.sex}"
 
 
 class ADHDDisorder(models.Model):
