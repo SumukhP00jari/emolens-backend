@@ -18,14 +18,13 @@ class Neurodivergent(models.Model):
         managed = False
 
 class LearningHub(models.Model):
-    question = models.TextField(null=True, db_column='question')
-    content = models.TextField(null=True, db_column='content')
-    data_insight = models.TextField(null=True, db_column='data_insight')
+    question = models.TextField(null=True, primary_key=True)  
+    content = models.TextField(null=True)
+    data_insight = models.TextField(null=True)
 
     class Meta:
         db_table = 'learning_hub'
         managed = False
-        default_auto_field = None
 
 
 class AdhdTreatment(models.Model):
