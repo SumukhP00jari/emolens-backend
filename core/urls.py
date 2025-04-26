@@ -18,10 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from stats_api.views import (
     ADHDStatsAPIView, NeurodivergentStatsAPIView, DBConnectionCheck,
-    ADHDPrevalenceAgeAPIView, ADHDPrevalenceYearAPIView,
-    ADHDTreatmentAPIView, ADHDDisorderAPIView,
-    ADHDConditionAPIView, ADHDDayOffAPIView,
-    ADHDPrescriptionAPIView,LearningHubAPIView
+     LearningHubAPIView,
+    AdhdTreatmentAPIView,
+    AdhdPrevalenceYearAPIView,
+    AdhdPrevalenceAgeAPIView,
+    AdhdPrescriptionAPIView,
+    AdhdDisorderAPIView,
+    AdhdConditionAPIView,
+    AdhdDayoffAPIView,
 )
 
 urlpatterns = [
@@ -32,13 +36,13 @@ urlpatterns = [
     path("api/neurodivergent/", NeurodivergentStatsAPIView.as_view(), name="neurodivergent-stats"),
     path("api/check-db/", DBConnectionCheck.as_view(), name="check-db"),
 
-    # Learning Hub API endpoints
-    path("api/learning-hub/", LearningHubAPIView.as_view(), name="learning-hub"),
-    path("api/adhd-treatment/", ADHDTreatmentAPIView.as_view(), name="adhd-treatment"),
-    path("api/adhd-prevalence-year/", ADHDPrevalenceYearAPIView.as_view(), name="adhd-prevalence-year"),
-    path("api/adhd-prevalence-age/", ADHDPrevalenceAgeAPIView.as_view(), name="adhd-prevalence-age"),
-    path("api/adhd-disorder/", ADHDDisorderAPIView.as_view(), name="adhd-disorder"),
-    path("api/adhd-condition/", ADHDConditionAPIView.as_view(), name="adhd-condition"),
-    path("api/adhd-dayoff/", ADHDDayOffAPIView.as_view(), name="adhd-dayoff"),
-    path("api/adhd-prescription/", ADHDPrescriptionAPIView.as_view(), name="adhd-prescription"),
+
+    path('api/learning-hub/', LearningHubAPIView.as_view(), name='learning-hub'),
+    path('api/adhd-treatment/', AdhdTreatmentAPIView.as_view(), name='adhd-treatment'),
+    path('api/adhd-prevalence-year/', AdhdPrevalenceYearAPIView.as_view(), name='adhd-prevalence-year'),
+    path('api/adhd-prevalence-age/', AdhdPrevalenceAgeAPIView.as_view(), name='adhd-prevalence-age'),
+    path('api/adhd-prescription/', AdhdPrescriptionAPIView.as_view(), name='adhd-prescription'),
+    path('api/adhd-disorder/', AdhdDisorderAPIView.as_view(), name='adhd-disorder'),
+    path('api/adhd-condition/', AdhdConditionAPIView.as_view(), name='adhd-condition'),
+    path('api/adhd-dayoff/', AdhdDayoffAPIView.as_view(), name='adhd-dayoff'),
 ]
