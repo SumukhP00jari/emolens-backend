@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from .models import (
-    ADHD, Neurodivergent, LearningHub, ADHDTreatment,
-    ADHDPrevalenceYear, ADHDPrevalenceAge,
-    ADHDPrescription, ADHDDisorder, ADHDCondition, ADHDDayOff
+    ADHD, Neurodivergent, LearningHub, AdhdTreatment, AdhdPrevalenceYear, AdhdPrevalenceAge,
+    AdhdPrescription, AdhdDisorder, AdhdCondition, AdhdDayoff
 )
 class ADHDSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,37 +18,37 @@ class LearningHubSerializer(serializers.ModelSerializer):
         model = LearningHub
         fields = '__all__'
 
-class ADHDTreatmentSerializer(serializers.ModelSerializer):
+class AdhdTreatmentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDTreatment
+        model = AdhdTreatment
         fields = '__all__'
 
-class ADHDPrevalenceYearSerializer(serializers.ModelSerializer):
+class AdhdPrevalenceYearSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDPrevalenceYear
+        model = AdhdPrevalenceYear
         fields = '__all__'
 
-class ADHDPrevalenceAgeSerializer(serializers.ModelSerializer):
+class AdhdPrevalenceAgeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDPrevalenceAge
+        model = AdhdPrevalenceAge
         fields = '__all__'
 
-class ADHDPrescriptionSerializer(serializers.ModelSerializer):
+class AdhdPrescriptionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDPrescription
+        model = AdhdPrescription
         fields = '__all__'
 
-class ADHDDisorderSerializer(serializers.ModelSerializer):
+class AdhdDisorderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDDisorder
+        model = AdhdDisorder
         fields = '__all__'
 
-class ADHDConditionSerializer(serializers.ModelSerializer):
+class AdhdConditionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDCondition
+        model = AdhdCondition
         fields = '__all__'
 
-class ADHDDayOffSerializer(serializers.ModelSerializer):
+class AdhdDayoffSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ADHDDayOff
+        model = AdhdDayoff
         fields = '__all__'
