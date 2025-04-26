@@ -18,6 +18,7 @@ class Neurodivergent(models.Model):
         managed = False
 
 class LearningHub(models.Model):
+    id = models.AutoField(primary_key=True)
     question = models.TextField()
     content = models.TextField()
     data_insight = models.TextField()
@@ -25,9 +26,9 @@ class LearningHub(models.Model):
     class Meta:
         db_table = 'learning_hub'
         managed = False
-        default_auto_field = None  
 
 class ADHDTreatment(models.Model):
+    id = models.AutoField(primary_key=True)
     treatment_type = models.TextField()
     age_group = models.TextField()
     percentage = models.FloatField()
@@ -35,19 +36,19 @@ class ADHDTreatment(models.Model):
     class Meta:
         db_table = 'adhd_treatment'
         managed = False
-        default_auto_field = None
 
 class ADHDPrevalenceYear(models.Model):
-    year = models.CharField(max_length=10)
+    id = models.AutoField(primary_key=True)
+    year = models.TextField()
     sex = models.TextField()
     adhd_estimate = models.IntegerField()
 
     class Meta:
         db_table = 'adhd_prevalence_year'
         managed = False
-        default_auto_field = None
 
 class ADHDPrevalenceAge(models.Model):
+    id = models.AutoField(primary_key=True)
     sex = models.CharField(max_length=20)
     age_group = models.CharField(max_length=10)
     adhd_estimate = models.IntegerField()
@@ -55,9 +56,9 @@ class ADHDPrevalenceAge(models.Model):
     class Meta:
         db_table = 'adhd_prevalence_age'
         managed = False
-        default_auto_field = None
 
 class ADHDDisorder(models.Model):
+    id = models.AutoField(primary_key=True)
     mental_disorder = models.TextField()
     sex = models.TextField()
     prevalence = models.FloatField()
@@ -65,9 +66,9 @@ class ADHDDisorder(models.Model):
     class Meta:
         db_table = 'adhd_disorder'
         managed = False
-        default_auto_field = None
 
 class ADHDCondition(models.Model):
+    id = models.AutoField(primary_key=True)
     age_group = models.TextField()
     conditions = models.TextField()
     percentage = models.FloatField()
@@ -75,18 +76,18 @@ class ADHDCondition(models.Model):
     class Meta:
         db_table = 'adhd_condition'
         managed = False
-        default_auto_field = None
 
 class ADHDDayOff(models.Model):
+    id = models.AutoField(primary_key=True)
     disorder = models.TextField()
     average_days_absent = models.IntegerField()
 
     class Meta:
         db_table = 'adhd_dayoff'
         managed = False
-        default_auto_field = None
 
 class ADHDPrescription(models.Model):
+    id = models.AutoField(primary_key=True)
     age_group = models.TextField()
     year = models.TextField()
     count = models.IntegerField()
@@ -94,4 +95,3 @@ class ADHDPrescription(models.Model):
     class Meta:
         db_table = 'adhd_prescription'
         managed = False
-        default_auto_field = None
