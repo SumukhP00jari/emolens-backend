@@ -17,15 +17,25 @@ class Neurodivergent(models.Model):
         db_table = 'neurodivergent'
         managed = False
 
-class LearningHub(models.Model):
-    id = models.AutoField(primary_key=True)
-    question = models.TextField()
-    content = models.TextField()
-    data_insight = models.TextField()
+class ADHDPrevalenceAge(models.Model):
+    sex = models.CharField(max_length=20)
+    age_group = models.CharField(max_length=20)
+    adhd_estimate = models.IntegerField()
 
     class Meta:
-        db_table = 'learning_hub'
+        db_table = 'adhd_prevalence_age'
         managed = False
+
+
+class ADHDPrevalenceYear(models.Model):
+    year = models.CharField(max_length=10)
+    sex = models.CharField(max_length=20)
+    adhd_estimate = models.IntegerField()
+
+    class Meta:
+        db_table = 'adhd_prevalence_year'
+        managed = False
+
 
 class ADHDTreatment(models.Model):
     treatment_type = models.TextField()
@@ -34,26 +44,6 @@ class ADHDTreatment(models.Model):
 
     class Meta:
         db_table = 'adhd_treatment'
-        managed = False
-
-class ADHDPrevalenceYear(models.Model):
-    year = models.TextField()
-    sex = models.TextField()
-    adhd_estimate = models.IntegerField()
-
-    class Meta:
-        db_table = 'adhd_prevalence_year'
-        managed = False
-
-class ADHDPrevalenceAge(models.Model):
-    dummy_id = models.AutoField(primary_key=True)
-
-    sex = models.CharField(max_length=20)
-    age_group = models.CharField(max_length=10)
-    adhd_estimate = models.IntegerField()
-
-    class Meta:
-        db_table = 'adhd_prevalence_age'
         managed = False
 
 
@@ -66,8 +56,8 @@ class ADHDDisorder(models.Model):
         db_table = 'adhd_disorder'
         managed = False
 
+
 class ADHDCondition(models.Model):
-    id = models.AutoField(primary_key=True)
     age_group = models.TextField()
     conditions = models.TextField()
     percentage = models.FloatField()
@@ -76,8 +66,8 @@ class ADHDCondition(models.Model):
         db_table = 'adhd_condition'
         managed = False
 
+
 class ADHDDayOff(models.Model):
-    id = models.AutoField(primary_key=True)
     disorder = models.TextField()
     average_days_absent = models.IntegerField()
 
@@ -85,12 +75,22 @@ class ADHDDayOff(models.Model):
         db_table = 'adhd_dayoff'
         managed = False
 
+
 class ADHDPrescription(models.Model):
-    id = models.AutoField(primary_key=True)
     age_group = models.TextField()
     year = models.TextField()
     count = models.IntegerField()
 
     class Meta:
         db_table = 'adhd_prescription'
+        managed = False
+
+
+class LearningHub(models.Model):
+    question = models.TextField()
+    content = models.TextField()
+    data_insight = models.TextField()
+
+    class Meta:
+        db_table = 'learning_hub'
         managed = False

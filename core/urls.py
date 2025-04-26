@@ -33,12 +33,12 @@ urlpatterns = [
     path("api/check-db/", DBConnectionCheck.as_view(), name="check-db"),
 
     # Learning Hub API endpoints
-    path("api/adhd-prevalence-age/", ADHDPrevalenceAgeAPIView.as_view(), name="adhd-prevalence-age"),
-    path("api/adhd-prevalence-year/", ADHDPrevalenceYearAPIView.as_view(), name="adhd-prevalence-year"),
+    path("api/learning-hub/", LearningHubAPIView.as_view(), name="learning-hub"),
     path("api/adhd-treatment/", ADHDTreatmentAPIView.as_view(), name="adhd-treatment"),
+    path("api/adhd-prevalence-year/", ADHDPrevalenceYearAPIView.as_view(), name="adhd-prevalence-year"),
+    path("api/adhd-prevalence-age/", ADHDPrevalenceAgeAPIView.as_view(), name="adhd-prevalence-age"),
     path("api/adhd-disorder/", ADHDDisorderAPIView.as_view(), name="adhd-disorder"),
     path("api/adhd-condition/", ADHDConditionAPIView.as_view(), name="adhd-condition"),
     path("api/adhd-dayoff/", ADHDDayOffAPIView.as_view(), name="adhd-dayoff"),
     path("api/adhd-prescription/", ADHDPrescriptionAPIView.as_view(), name="adhd-prescription"),
-    path("api/learning-hub/", LearningHubAPIView.as_view(), name="learning-hub"),
 ]
