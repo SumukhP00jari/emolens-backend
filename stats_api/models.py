@@ -25,6 +25,7 @@ class LearningHub(models.Model):
     class Meta:
         db_table = 'learning_hub'
         managed = False
+        default_auto_field = None
 
 
 class AdhdTreatment(models.Model):
