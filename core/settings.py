@@ -30,6 +30,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['api.kindlepeers.me', 'localhost', '127.0.0.1']
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Application definition
 
