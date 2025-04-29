@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'emolens_api',
     "corsheaders",
     'stats_api',
+    'rate_api',
 ]
 
 MIDDLEWARE = [

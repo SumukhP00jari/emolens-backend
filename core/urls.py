@@ -45,4 +45,6 @@ urlpatterns = [
     path('api/adhd-disorder/', AdhdDisorderAPIView.as_view(), name='adhd-disorder'),
     path('api/adhd-condition/', AdhdConditionAPIView.as_view(), name='adhd-condition'),
     path('api/adhd-dayoff/', AdhdDayoffAPIView.as_view(), name='adhd-dayoff'),
+
+    path("api/", include("rate_api.urls")),
 ]
