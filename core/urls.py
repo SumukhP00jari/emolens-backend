@@ -47,4 +47,7 @@ urlpatterns = [
     path('api/adhd-dayoff/', AdhdDayoffAPIView.as_view(), name='adhd-dayoff'),
 
     path("api/", include("rate_api.urls")),
+
+    path('api/simulator/', include('simulator_api.urls')),
+
 ]

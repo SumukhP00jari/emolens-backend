@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'stats_api',
     'rate_api',
+    'simulator_api',
 ]
 
 MIDDLEWARE = [
