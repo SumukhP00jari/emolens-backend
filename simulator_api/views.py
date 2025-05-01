@@ -7,6 +7,7 @@ from .models import SimulatorScenario, SimulatorQuestion, SimulatorAnswer
 from .serializers import SimulatorScenarioSerializer, SimulatorQuestionSerializer, SimulatorAnswerSerializer
 
 
+# Returns all scenarios with ID, title, and background
 class ScenarioListAPIView(APIView):
     def get(self, request):
         scenarios = SimulatorScenario.objects.all()
@@ -14,6 +15,7 @@ class ScenarioListAPIView(APIView):
         return Response(serializer.data)
 
 
+# Starts a scenario by returning the first question (round 1) and all answer options
 class ScenarioStartAPIView(APIView):
     def get(self, request, scenario_id):
         try:
@@ -27,10 +29,11 @@ class ScenarioStartAPIView(APIView):
             return Response({"error": "Scenario not found or no round 1 question."}, status=404)
 
 
+# Given an answer ID, returns the next question and its answer options
 class NextRoundAPIView(APIView):
     def post(self, request):
         answer_id = request.data.get("answer_id")
-
+        # next_round_num
         try:
             selected_answer = SimulatorAnswer.objects.get(answer_id=answer_id)
             next_q_id = selected_answer.next_question_id
