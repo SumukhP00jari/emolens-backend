@@ -28,7 +28,7 @@ class LearningHub(models.Model):
 
 
 class AdhdTreatment(models.Model):
-    treatment_type = models.CharField(max_length=100, null=True, primary_key=True)  # 👈 safe
+    treatment_type = models.CharField(max_length=100, null=True, primary_key=True)  
     age_group = models.CharField(max_length=20, null=True)
     percentage = models.DecimalField(max_digits=4, decimal_places=1, null=True)
 
