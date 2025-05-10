@@ -50,4 +50,7 @@ urlpatterns = [
 
     path('api/simulator/', include('simulator_api.urls')),
 
+    path("api/", include("friendship_api.urls")),
+
+
 ]

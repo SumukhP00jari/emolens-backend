@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'stats_api',
     'rate_api',
     'simulator_api',
+    'friendship_api',
 ]
 
 MIDDLEWARE = [

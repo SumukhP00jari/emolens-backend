@@ -1,3 +1,11 @@
 from django.db import models
 
-# Create your models here.
+
+
+class KindnessTask(models.Model):
+    task_title = models.TextField(null=True, blank=True)
+    task_description = models.TextField(null=True, blank=True)  
+
+    class Meta:
+        managed = False  
+        db_table = 'kindness_tasks'
