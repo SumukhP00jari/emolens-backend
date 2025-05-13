@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+import whisper
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,8 +9,9 @@ from openai import OpenAI
 from rest_framework.parsers import MultiPartParser, FormParser
 import re
 import json
-import whisper
 import os
+
+whisper_model = whisper.load_model("tiny")
 
 # Connect to OpenRouter using OpenAI SDK
 client = OpenAI(
@@ -129,22 +131,25 @@ class TranscribeAudioAPIView(APIView):
         if not audio_file:
             return Response({"error": "No audio file provided."}, status=400)
 
+        temp_path = "temp_audio.mp3"
         try:
             # Save uploaded audio temporarily
-            with open("temp_audio.mp3", "wb") as f:
+            with open(temp_path, "wb") as f:
                 for chunk in audio_file.chunks():
                     f.write(chunk)
 
-            model = whisper.load_model("tiny")  
-            result = model.transcribe("temp_audio.mp3")
-            transcription = result["text"]
-
-            # Delete temporary file
-            os.remove("temp_audio.mp3")
+            # Use preloaded model
+            result = whisper_model.transcribe(temp_path)
+            transcription = result.get("text", "").strip()
 
             return Response({
-                "transcription": transcription.strip()
+                "transcription": transcription
             }, status=200)
 
         except Exception as e:
             return Response({"error": f"Transcription failed: {str(e)}"}, status=500)
+
+        finally:
+            # Clean up temp file if it exists
+            if os.path.exists(temp_path):
+                os.remove(temp_path)
