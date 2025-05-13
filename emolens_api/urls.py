@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RephraseTextAPIView
+from .views import RephraseTextAPIView, TranscribeAudioAPIView
 
 urlpatterns = [
     path('rewrite/', RephraseTextAPIView.as_view(), name='rewrite-text'),
