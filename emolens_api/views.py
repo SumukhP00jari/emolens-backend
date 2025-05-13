@@ -135,7 +135,7 @@ class TranscribeAudioAPIView(APIView):
                 for chunk in audio_file.chunks():
                     f.write(chunk)
 
-            model = whisper.load_model("base")  
+            model = whisper.load_model("tiny")  
             result = model.transcribe("temp_audio.mp3")
             transcription = result["text"]
 
