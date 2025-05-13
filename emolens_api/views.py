@@ -5,8 +5,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
 from openai import OpenAI
+from rest_framework.parsers import MultiPartParser, FormParser
 import re
 import json
+import whisper
+import os
 
 # Connect to OpenRouter using OpenAI SDK
 client = OpenAI(
@@ -92,6 +95,8 @@ Make sure the tone is gentle, inclusive, and encourages empathy and friendship.
 
 Avoid sarcasm, judgment, or urgency.
 
+Also keep the response short around 1 or 2 lines and meaningful.
+
 Original: "{input_text}"
 Rephrased:
 """
@@ -113,3 +118,33 @@ Rephrased:
                 "error_type": "server_error",
                 "message": f"An unexpected error occurred: {str(e)}"
             }, status=500)
+        
+
+# Transcribes uploaded audio using Whisper
+class TranscribeAudioAPIView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        audio_file = request.FILES.get("audio")
+        if not audio_file:
+            return Response({"error": "No audio file provided."}, status=400)
+
+        try:
+            # Save uploaded audio temporarily
+            with open("temp_audio.mp3", "wb") as f:
+                for chunk in audio_file.chunks():
+                    f.write(chunk)
+
+            model = whisper.load_model("base")  
+            result = model.transcribe("temp_audio.mp3")
+            transcription = result["text"]
+
+            # Delete temporary file
+            os.remove("temp_audio.mp3")
+
+            return Response({
+                "transcription": transcription.strip()
+            }, status=200)
+
+        except Exception as e:
+            return Response({"error": f"Transcription failed: {str(e)}"}, status=500)
