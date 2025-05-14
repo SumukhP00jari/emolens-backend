@@ -1,16 +1,26 @@
 import os
+import h5py
+import json
 import cv2
 import numpy as np
 
-from tensorflow.keras.models import load_model
+from tensorflow.keras.models import model_from_json
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 
+def load_legacy_model(h5_path):
+    with h5py.File(h5_path, "r") as f:
+        model_config = f.attrs["model_config"]
+        model_json = model_config.decode("utf-8") if isinstance(model_config, bytes) else model_config
+        model = model_from_json(model_json)
+        model.load_weights(h5_path)
+    return model
+
 # Load the model only once
 model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
-model = load_model(model_path, compile=False)
+model = load_legacy_model(model_path)
 
 # Emotion labels
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
