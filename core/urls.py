@@ -52,5 +52,8 @@ urlpatterns = [
 
     path("api/", include("friendship_api.urls")),
 
+    path("api/", include("mood_radar_api.urls")),
+
+
 
 ]
