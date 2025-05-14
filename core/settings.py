@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rate_api',
     'simulator_api',
     'friendship_api',
+    'mood_radar_api',
 ]
 
 MIDDLEWARE = [
