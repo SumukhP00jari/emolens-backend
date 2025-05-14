@@ -13,7 +13,7 @@ from rest_framework import status
 def load_legacy_model(h5_path):
     with h5py.File(h5_path, "r") as f:
         model_config = f.attrs.get("model_config")
-        model_json = model_config.decode("utf-8")
+        model_json = model_config if isinstance(model_config, str) else model_config.decode("utf-8")
         model = model_from_json(model_json)
         model.load_weights(h5_path)
         return model
