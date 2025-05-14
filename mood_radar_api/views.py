@@ -1,24 +1,18 @@
-import h5py
+import os
 import cv2
 import numpy as np
-import os
 
-from tensorflow.keras.models import model_from_json
+from tensorflow.keras.models import load_model
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 
-# Load legacy Keras model safely
-def load_legacy_model(h5_path):
-    with h5py.File(h5_path, "r") as f:
-        model_config = f.attrs.get("model_config")
-        model_json = model_config if isinstance(model_config, str) else model_config.decode("utf-8")
-        model = model_from_json(model_json)
-        model.load_weights(h5_path)
-        return model
+# Load the model only once
+model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
+model = load_model(model_path, compile=False)
 
-model = load_legacy_model(os.path.join(os.path.dirname(__file__), "emotion_model.h5"))
+# Emotion labels
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 class MoodRadarAPIView(APIView):
@@ -30,10 +24,12 @@ class MoodRadarAPIView(APIView):
             return Response({"error": "No image uploaded"}, status=400)
 
         try:
+            # Convert image to OpenCV format
             img_array = np.frombuffer(image_file.read(), np.uint8)
             img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+            # Detect face
             face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
             faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
@@ -46,10 +42,12 @@ class MoodRadarAPIView(APIView):
             face_img = gray[y:y+h, x:x+w]
             face_img = cv2.resize(face_img, (48, 48))
 
+            # Normalize and reshape
             face_array = face_img.astype("float32") / 255.0
             face_array = np.expand_dims(face_array, axis=-1)
             face_array = np.expand_dims(face_array, axis=0)
 
+            # Predict
             prediction = model.predict(face_array)
             emotion = emotion_labels[np.argmax(prediction)]
 
