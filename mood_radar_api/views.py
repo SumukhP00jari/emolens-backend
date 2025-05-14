@@ -5,12 +5,16 @@ from tensorflow.keras.models import load_model
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
-
+from rest_framework import status
 
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "emotion_model.h5")
 
 
-model = load_model(model_path, compile=False)
+try:
+    model = load_model(model_path, compile=False, safe_mode=False)
+except TypeError:
+   
+    model = load_model(model_path, compile=False)
 
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
