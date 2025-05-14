@@ -1,6 +1,8 @@
 import h5py
 import cv2
 import numpy as np
+import os
+
 from tensorflow.keras.models import model_from_json
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -16,7 +18,7 @@ def load_legacy_model(h5_path):
         model.load_weights(h5_path)
         return model
 
-model = load_legacy_model("emotion_model.h5")
+model = load_legacy_model(os.path.join(os.path.dirname(__file__), "emotion_model.h5"))
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 class MoodRadarAPIView(APIView):
