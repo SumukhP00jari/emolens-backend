@@ -1,15 +1,16 @@
 import os
 import cv2
 import numpy as np
-import json
 import h5py
-from tensorflow.keras.models import model_from_json
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras.utils import custom_object_scope
+from tensorflow.keras.mixed_precision import Policy
 
-emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
 
 def load_emotion_model(h5_path):
     with h5py.File(h5_path, "r") as f:
@@ -17,17 +18,15 @@ def load_emotion_model(h5_path):
         if isinstance(model_config, bytes):
             model_config = model_config.decode("utf-8")
 
-        model_dict = json.loads(model_config)
-        for layer in model_dict.get("config", {}).get("layers", []):
-            if "config" in layer and "batch_shape" in layer["config"]:
-                del layer["config"]["batch_shape"]
-
-        cleaned_json = json.dumps(model_dict)
-        model = model_from_json(cleaned_json)
+    with custom_object_scope({'DTypePolicy': Policy}):
+        model = model_from_json(model_config)
         model.load_weights(h5_path)
+
     return model
 
-model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
+model = load_emotion_model(model_path)
+
+emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 class MoodRadarAPIView(APIView):
     parser_classes = [MultiPartParser, FormParser]
@@ -51,16 +50,13 @@ class MoodRadarAPIView(APIView):
                 return Response({"error": "Please upload an image with only one face"}, status=400)
 
             (x, y, w, h) = faces[0]
-            face_img = gray[y:y+h, x:x+w]
+            face_img = gray[y:y + h, x:x + w]
             face_img = cv2.resize(face_img, (48, 48))
-
             face_array = face_img.astype("float32") / 255.0
             face_array = np.expand_dims(face_array, axis=-1)
             face_array = np.expand_dims(face_array, axis=0)
 
-            # Load model inside request
-            model = load_emotion_model(model_path)
-
+            
             prediction = model.predict(face_array)
             emotion = emotion_labels[np.argmax(prediction)]
 
