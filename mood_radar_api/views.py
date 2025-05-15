@@ -11,22 +11,29 @@ from tensorflow.keras.models import model_from_json
 
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
+def clean_layer_config(config):
+    if isinstance(config, dict):
+        config.pop("batch_shape", None)
+        config.pop("dtype_policy", None)
+        config.pop("synchronized", None)
+        for key, value in config.items():
+            clean_layer_config(value)
+    elif isinstance(config, list):
+        for item in config:
+            clean_layer_config(item)
+
 def load_emotion_model(h5_path):
     with h5py.File(h5_path, "r") as f:
         model_config = f.attrs.get("model_config")
         if isinstance(model_config, bytes):
             model_config = model_config.decode("utf-8")
+        model_dict = json.loads(model_config)
 
-        config_dict = json.loads(model_config)
 
-        for layer in config_dict.get("config", {}).get("layers", []):
-            if "config" in layer:
-                layer["config"].pop("batch_shape", None)
-                layer["config"].pop("dtype_policy", None)
-                layer["config"].pop("synchronized", None)
+        clean_layer_config(model_dict)
 
-        clean_json = json.dumps(config_dict)
-        model = model_from_json(clean_json)
+        cleaned_json = json.dumps(model_dict)
+        model = model_from_json(cleaned_json)
         model.load_weights(h5_path)
         return model
 
