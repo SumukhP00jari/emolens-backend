@@ -5,9 +5,12 @@ from tensorflow.keras.models import load_model
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
+from rest_framework import status
 
-model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
+
+model_path = os.path.join(os.path.dirname(__file__), "emotion_model_cleaned.keras")
 model = load_model(model_path)
+
 
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
@@ -20,13 +23,12 @@ class MoodRadarAPIView(APIView):
             return Response({"error": "No image uploaded"}, status=400)
 
         try:
+            
             img_array = np.frombuffer(image_file.read(), np.uint8)
             img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-            face_cascade = cv2.CascadeClassifier(
-                cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-            )
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
             faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
             if len(faces) == 0:
@@ -37,11 +39,11 @@ class MoodRadarAPIView(APIView):
             (x, y, w, h) = faces[0]
             face_img = gray[y:y+h, x:x+w]
             face_img = cv2.resize(face_img, (48, 48))
-
             face_array = face_img.astype("float32") / 255.0
-            face_array = np.expand_dims(face_array, axis=-1)
-            face_array = np.expand_dims(face_array, axis=0)
+            face_array = np.expand_dims(face_array, axis=-1)  
+            face_array = np.expand_dims(face_array, axis=0)   
 
+           
             prediction = model.predict(face_array)
             emotion = emotion_labels[np.argmax(prediction)]
 
