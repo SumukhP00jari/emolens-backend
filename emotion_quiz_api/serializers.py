@@ -4,4 +4,11 @@ from .models import EmotionGuessing
 class EmotionGuessingSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmotionGuessing
-        fields = '__all__'
+        fields = [
+            'question_id',
+            'image_url',
+            'answer_id',
+            'answer_desc',
+            'correct_answer_id'
+        ]
+
