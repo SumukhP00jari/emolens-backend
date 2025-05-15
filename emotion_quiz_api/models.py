@@ -1,8 +1,5 @@
 from django.db import models
 
-
-from django.db import models
-
 class EmotionGuessing(models.Model):
     question_id = models.IntegerField()
     image_url = models.TextField()
@@ -11,5 +8,6 @@ class EmotionGuessing(models.Model):
     correct_answer_id = models.IntegerField()
 
     class Meta:
-        managed = False  # Because this table already exists in your DB
+        managed = False
         db_table = 'emotion_guessing'
+        unique_together = (('question_id', 'answer_id'),)
