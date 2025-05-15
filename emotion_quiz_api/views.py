@@ -1,38 +1,34 @@
+from django.db import connection
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .models import EmotionGuessing
 
 class EmotionGuessingAPIView(APIView):
     def get(self, request):
         try:
-            question_ids = EmotionGuessing.objects.values_list('question_id', flat=True).distinct()
-            response_data = []
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT question_id, image_url, answer_id, answer_desc, correct_answer_id
+                    FROM emotion_guessing
+                """)
+                rows = cursor.fetchall()
 
-            for qid in question_ids:
-                question_entries = EmotionGuessing.objects.filter(question_id=qid)
-                if not question_entries.exists():
-                    continue
-
-                options = [
-                    {
-                        "id": entry.answer_id,
-                        "desc": entry.answer_desc
+            
+            grouped = {}
+            for question_id, image_url, answer_id, answer_desc, correct_answer_id in rows:
+                if question_id not in grouped:
+                    grouped[question_id] = {
+                        "question_id": question_id,
+                        "image_url": image_url,
+                        "options": [],
+                        "correct_answer_id": correct_answer_id
                     }
-                    for entry in question_entries
-                ]
 
-                image_url = question_entries.first().image_url
-                correct_answer_id = question_entries.first().correct_answer_id
-
-                response_data.append({
-                    "question_id": qid,
-                    "image_url": image_url,
-                    "options": options,
-                    "correct_answer_id": correct_answer_id
+                grouped[question_id]["options"].append({
+                    "id": answer_id,
+                    "desc": answer_desc
                 })
 
-            return Response(response_data)
+            return Response(list(grouped.values()))
 
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": str(e)}, status=500)
