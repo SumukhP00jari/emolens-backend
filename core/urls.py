@@ -54,6 +54,6 @@ urlpatterns = [
 
     path("api/", include("mood_radar_api.urls")),
 
-
+    path("api/", include("emotion_quiz_api.urls")),
 
 ]
