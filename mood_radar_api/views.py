@@ -16,8 +16,8 @@ def load_emotion_model(h5_path):
         model_config = f.attrs["model_config"]
         if isinstance(model_config, bytes):
             model_config = model_config.decode("utf-8")
-
         model_dict = json.loads(model_config)
+
         for layer in model_dict.get("config", {}).get("layers", []):
             if "config" in layer and "batch_shape" in layer["config"]:
                 del layer["config"]["batch_shape"]
