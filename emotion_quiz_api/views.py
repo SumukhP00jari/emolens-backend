@@ -4,6 +4,8 @@ from rest_framework.response import Response
 
 class EmotionGuessingAPIView(APIView):
     def get(self, request):
+        print("🔥 EmotionGuessing API is now using RAW SQL!")  
+
         try:
             with connection.cursor() as cursor:
                 cursor.execute("""
@@ -12,7 +14,7 @@ class EmotionGuessingAPIView(APIView):
                 """)
                 rows = cursor.fetchall()
 
-            
+           
             grouped = {}
             for question_id, image_url, answer_id, answer_desc, correct_answer_id in rows:
                 if question_id not in grouped:
