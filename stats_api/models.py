@@ -18,7 +18,7 @@ class Neurodivergent(models.Model):
         managed = False
 
 class LearningHub(models.Model):
-    question = models.TextField(null=True, primary_key=True)  
+    question = models.TextField(primary_key=True)  
     content = models.TextField(null=True)
     data_insight = models.TextField(null=True)
 
