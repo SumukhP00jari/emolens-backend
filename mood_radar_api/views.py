@@ -2,24 +2,27 @@ import os
 import cv2
 import numpy as np
 
-from tensorflow.keras.models import load_model, Sequential
+from tensorflow.keras.models import model_from_json
+from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Input
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
+from rest_framework import status
 
+def load_emotion_model(h5_path):
+    import h5py
+    with h5py.File(h5_path, "r") as f:
+        model_json = f.attrs["model_config"].decode("utf-8")
 
+    model = model_from_json(model_json)
+    model.load_weights(h5_path)
+    return model
 
 model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
+model = load_emotion_model(model_path)
 
-
-base_model = load_model(model_path, compile=False)
-
-
-model = Sequential([
-    Input(shape=(48, 48, 1)),
-    *base_model.layers[1:]  
-])
+emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 class MoodRadarAPIView(APIView):
     parser_classes = [MultiPartParser, FormParser]
