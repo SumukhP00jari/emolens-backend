@@ -28,7 +28,7 @@ class LearningHub(models.Model):
 
 
 class AdhdTreatment(models.Model):
-    treatment_type = models.CharField(max_length=100, null=True, primary_key=True)  
+    treatment_type = models.CharField(max_length=100, primary_key=True)  
     age_group = models.CharField(max_length=20, null=True)
     percentage = models.DecimalField(max_digits=4, decimal_places=1, null=True)
 
@@ -38,7 +38,7 @@ class AdhdTreatment(models.Model):
 
 
 class AdhdPrevalenceYear(models.Model):
-    year = models.IntegerField(null=True, primary_key=True)  
+    year = models.IntegerField(primary_key=True)  
     sex = models.CharField(max_length=10, null=True)
     adhd_estimate = models.IntegerField(null=True)
 
@@ -48,7 +48,7 @@ class AdhdPrevalenceYear(models.Model):
 
 
 class AdhdPrevalenceAge(models.Model):
-    sex = models.CharField(max_length=10, null=True, primary_key=True)  
+    sex = models.CharField(max_length=10, primary_key=True)  
     age_group = models.CharField(max_length=10, null=True)
     adhd_estimate = models.IntegerField(null=True)
 
@@ -58,7 +58,7 @@ class AdhdPrevalenceAge(models.Model):
 
 
 class AdhdPrescription(models.Model):
-    age_group = models.CharField(max_length=50, null=True, primary_key=True) 
+    age_group = models.CharField(max_length=50, primary_key=True) 
     year = models.CharField(max_length=9, null=True)
     count = models.IntegerField(null=True)
 
@@ -68,7 +68,7 @@ class AdhdPrescription(models.Model):
 
 
 class AdhdDisorder(models.Model):
-    mental_disorder = models.CharField(max_length=50, null=True, primary_key=True) 
+    mental_disorder = models.CharField(max_length=50, primary_key=True) 
     sex = models.CharField(max_length=10, null=True)
     prevalence = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
@@ -78,7 +78,7 @@ class AdhdDisorder(models.Model):
 
 
 class AdhdDayoff(models.Model):
-    disorder = models.CharField(max_length=50, null=True, primary_key=True)  
+    disorder = models.CharField(max_length=50, primary_key=True)  
     average_days_absent = models.IntegerField(null=True)
 
     class Meta:
@@ -87,7 +87,7 @@ class AdhdDayoff(models.Model):
 
 
 class AdhdCondition(models.Model):
-    age_group = models.CharField(max_length=50, null=True, primary_key=True)  
+    age_group = models.CharField(max_length=50, primary_key=True)  
     conditions = models.CharField(max_length=100, null=True)
     percentage = models.DecimalField(max_digits=5, decimal_places=1, null=True)
 

@@ -95,6 +95,9 @@ DATABASES = {
         'PASSWORD': 'kindlepeers123',
         'HOST': 'rds-kindlepeers.cdmcsi4iwcsz.ap-southeast-2.rds.amazonaws.com',
         'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',  # for emoji support
+        },
     }
 }
 
