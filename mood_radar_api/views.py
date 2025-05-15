@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-model_path = os.path.join(os.path.dirname(__file__), "emotion_model_cleaned.keras")
+model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
 model = load_model(model_path)
 
 
