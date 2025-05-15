@@ -10,12 +10,8 @@ from rest_framework import status
 model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "emotion_model.h5")
 
 
-try:
-    model = load_model(model_path, compile=False, safe_mode=False)
-except TypeError:
-   
-    model = load_model(model_path, compile=False)
-
+model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
+model = load_model(model_path, compile=False)
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 class MoodRadarAPIView(APIView):
@@ -31,8 +27,7 @@ class MoodRadarAPIView(APIView):
             img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-            face_cascade = cv2.CascadeClassifier(
-                cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
             faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
             if len(faces) == 0:
