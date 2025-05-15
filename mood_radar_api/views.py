@@ -13,11 +13,22 @@ from tensorflow.keras.mixed_precision import Policy
 model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
 
 def load_emotion_model(h5_path):
+    import h5py
+    import json
+    from tensorflow.keras.models import model_from_json
+    from tensorflow.keras.utils import custom_object_scope
+    from tensorflow.keras.mixed_precision import Policy
+
+    
     with h5py.File(h5_path, "r") as f:
         model_config = f.attrs["model_config"]
         if isinstance(model_config, bytes):
             model_config = model_config.decode("utf-8")
 
+    
+    model_config = model_config.replace('"batch_shape":', '"batch_input_shape":')
+
+    
     with custom_object_scope({'DTypePolicy': Policy}):
         model = model_from_json(model_config)
         model.load_weights(h5_path)
