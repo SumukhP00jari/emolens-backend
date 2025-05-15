@@ -12,10 +12,14 @@ from rest_framework import status
 
 def load_emotion_model(h5_path):
     import h5py
-    with h5py.File(h5_path, "r") as f:
-        model_json = f.attrs["model_config"].decode("utf-8")
+    from tensorflow.keras.models import model_from_json
 
-    model = model_from_json(model_json)
+    with h5py.File(h5_path, "r") as f:
+        model_config = f.attrs["model_config"]
+        if isinstance(model_config, bytes):
+            model_config = model_config.decode("utf-8")
+
+    model = model_from_json(model_config)
     model.load_weights(h5_path)
     return model
 
