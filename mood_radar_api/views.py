@@ -3,7 +3,9 @@ import cv2
 import numpy as np
 import json
 import h5py
+import tensorflow as tf
 from tensorflow.keras.models import model_from_json
+from tensorflow.keras.mixed_precision import Policy
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -11,11 +13,16 @@ from rest_framework import status
 
 emotion_labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
+custom_objects = {
+    'DTypePolicy': Policy
+}
+
 def load_emotion_model(h5_path):
     with h5py.File(h5_path, "r") as f:
         model_config = f.attrs["model_config"]
         if isinstance(model_config, bytes):
             model_config = model_config.decode("utf-8")
+
         model_dict = json.loads(model_config)
 
         for layer in model_dict.get("config", {}).get("layers", []):
@@ -23,8 +30,11 @@ def load_emotion_model(h5_path):
                 del layer["config"]["batch_shape"]
 
         cleaned_json = json.dumps(model_dict)
-        model = model_from_json(cleaned_json)
-        model.load_weights(h5_path)
+
+        with tf.keras.utils.custom_object_scope(custom_objects):
+            model = model_from_json(cleaned_json)
+            model.load_weights(h5_path)
+
     return model
 
 model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
