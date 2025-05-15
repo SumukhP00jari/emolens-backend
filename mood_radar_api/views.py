@@ -16,7 +16,7 @@ def clean_layer_config(config):
         config.pop("batch_shape", None)
         config.pop("dtype_policy", None)
         config.pop("synchronized", None)
-        for key, value in config.items():
+        for value in config.values():
             clean_layer_config(value)
     elif isinstance(config, list):
         for item in config:
@@ -36,6 +36,11 @@ def load_emotion_model(h5_path):
         model = model_from_json(cleaned_json)
         model.load_weights(h5_path)
         return model
+try:
+    model = load_emotion_model(model_path)
+except Exception as e:
+    print(f"Model loading failed: {e}")
+    model = None
 
 model_path = os.path.join(os.path.dirname(__file__), "emotion_model.h5")
 model = load_emotion_model(model_path)
