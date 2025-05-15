@@ -16,8 +16,8 @@ class EmotionGuessingAPIView(APIView):
 
                 options = [
                     {
-                        "answer_id": entry.answer_id,
-                        "answer_desc": entry.answer_desc
+                        "id": entry.answer_id,
+                        "desc": entry.answer_desc
                     }
                     for entry in question_entries
                 ]
