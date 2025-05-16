@@ -1,6 +1,8 @@
 import base64
 import io
 import numpy as np
+from django.conf import settings
+from pathlib import Path
 from PIL import Image
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,6 +13,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import SeparableConv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import img_to_array
 
+model_path = Path(settings.BASE_DIR) / 'mood_radar_api' / 'emotion_model.h5'
 EMOTION_LABELS = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 def build_model():
@@ -26,7 +29,7 @@ def build_model():
 
 model = build_model()
 try:
-    model.load_weights(str(settings.BASE_DIR / 'mood_radar_api' / 'emotion_model.h5'))
+    model.load_weights(model_path)
     model_loaded = True
 except Exception as e:
     print(f" Error loading model: {e}")
