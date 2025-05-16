@@ -22,6 +22,8 @@ def build_model():
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(SeparableConv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(SeparableConv2D(128, (3, 3), activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
     model.add(Dense(64, activation='relu'))
     model.add(Dense(len(EMOTION_LABELS), activation='softmax'))
