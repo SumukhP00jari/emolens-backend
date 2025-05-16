@@ -1,3 +1,6 @@
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Input, SeparableConv2D, MaxPooling2D, Flatten, Dense
+
 import base64
 import io
 import numpy as np
@@ -18,7 +21,8 @@ EMOTION_LABELS = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutr
 
 def build_model():
     model = Sequential()
-    model.add(SeparableConv2D(32, (3, 3), activation='relu', input_shape=(48, 48, 1)))
+    model.add(Input(shape=(48, 48, 1)))  
+    model.add(SeparableConv2D(32, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(SeparableConv2D(64, (3, 3), activation='relu'))
     model.add(MaxPooling2D(pool_size=(2, 2)))
