@@ -43,7 +43,7 @@ class MoodRadarAPIView(APIView):
             confidence = float(predictions[top_index])
 
             try:
-                response_obj = EmotionResponse.objects.get(emotion=emotion)
+                response_obj = EmotionResponse.objects.get(emotion__iexact=emotion)
                 response = random.choice([response_obj.response1, response_obj.response2])
                 response = response if response else response_obj.response1
                 meaning = response_obj.meaning
