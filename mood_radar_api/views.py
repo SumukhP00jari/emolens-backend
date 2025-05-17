@@ -46,8 +46,11 @@ class MoodRadarAPIView(APIView):
             image_cv = np.array(image)
 
             faces = face_cascade.detectMultiScale(image_cv, scaleFactor=1.1, minNeighbors=5)
+
             if len(faces) == 0:
                 return formatted_error("face_not_detected", "No human face detected in the image.")
+            elif len(faces) > 1:
+                return formatted_error("multiple_faces_detected", "Please upload a photo with only one human face.")
 
             image = image.resize((48, 48))
             image_array = img_to_array(image) / 255.0
