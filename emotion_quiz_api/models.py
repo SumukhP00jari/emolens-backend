@@ -1,7 +1,7 @@
 from django.db import models
 
 
-
+# Model for storing Emotion Guessing Game data
 class EmotionGuessing(models.Model):
     question_id = models.IntegerField()
     image_url = models.TextField(null=True)

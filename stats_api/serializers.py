@@ -3,6 +3,7 @@ from .models import (
     ADHD, Neurodivergent, LearningHub, AdhdTreatment, AdhdPrevalenceYear, AdhdPrevalenceAge,
     AdhdPrescription, AdhdDisorder, AdhdCondition, AdhdDayoff
 )
+# Serializers convert model instances into JSON and vice versa
 class ADHDSerializer(serializers.ModelSerializer):
     class Meta:
         model = ADHD

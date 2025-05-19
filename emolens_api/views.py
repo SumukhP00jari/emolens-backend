@@ -86,7 +86,7 @@ Sentence: "{input_text}"
                 "message": f"AI validation failed: {str(e)}"
             }, status=500)
 
-        # ✅ Now rephrase the input
+        #  Now rephrase the input
         try:
             rephrase_prompt = f"""
 You are a kind and supportive parenting assistant.
