@@ -16,7 +16,7 @@ from .models import EmotionResponse
 EMOTION_LABELS = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 # Path to the trained emotion detection model
-model_path = Path(settings.BASE_DIR) / 'mood_radar_api' / 'emotion_model.h5'
+model_path = Path(settings.BASE_DIR) / 'mood_radar_api' / 'emotion_model_v5.h5'
 
 # Path to the face detection model (Haar Cascade)
 cascade_path = Path(settings.BASE_DIR) / 'mood_radar_api' / 'haarcascade_frontalface_default.xml'
